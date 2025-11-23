@@ -23,10 +23,10 @@ const SwimLane: Component<SwimLaneProps> = props => {
     <div
       style={{
         background: 'var(--bg-secondary)',
-        border: `2px solid ${props.color}`,
-        'border-radius': '12px',
-        padding: '1rem',
-        'min-height': '600px',
+        border: `1px solid ${props.color}44`,
+        'border-radius': '10px',
+        padding: '0.75rem',
+        'min-height': '500px',
         display: 'flex',
         'flex-direction': 'column',
         'box-shadow': 'var(--shadow-md)',
@@ -38,18 +38,20 @@ const SwimLane: Component<SwimLaneProps> = props => {
         'align-items': 'center',
         'justify-content': 'space-between',
         'margin-bottom': '1rem',
-        'padding-bottom': '0.75rem',
-        'border-bottom': `2px solid ${props.color}`,
+        padding: '0.75rem',
+        background: `linear-gradient(135deg, ${props.color}22, ${props.color}11)`,
+        'border-radius': '8px',
+        border: `1px solid ${props.color}`,
       }}>
         <div style={{
           display: 'flex',
           'align-items': 'center',
           gap: '0.5rem',
         }}>
-          <span style={{ 'font-size': '1.5rem' }}>{phaseIcons[props.phase]}</span>
+          <span style={{ 'font-size': '1.25rem' }}>{phaseIcons[props.phase]}</span>
           <h2 style={{
-            'font-size': '1rem',
-            'font-weight': '600',
+            'font-size': '0.875rem',
+            'font-weight': '700',
             color: props.color,
             'text-transform': 'uppercase',
             'letter-spacing': '0.05em',

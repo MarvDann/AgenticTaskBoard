@@ -31,10 +31,10 @@ const TaskCard: Component<TaskCardProps> = props => {
       class="task-card animate-fade-in"
       style={{
         background: 'var(--bg-card)',
-        border: `2px solid ${phaseColors[props.task.status]}`,
-        'border-radius': '8px',
-        padding: '1rem',
-        'margin-bottom': '0.75rem',
+        border: `1px solid ${phaseColors[props.task.status]}`,
+        'border-radius': '6px',
+        padding: '0.65rem',
+        'margin-bottom': '0.5rem',
         cursor: 'grab',
         transition: 'all 0.2s ease',
         'box-shadow': 'var(--shadow-sm)',
@@ -56,10 +56,11 @@ const TaskCard: Component<TaskCardProps> = props => {
         'margin-bottom': '0.5rem',
       }}>
         <h3 style={{
-          'font-size': '0.875rem',
+          'font-size': '0.8rem',
           'font-weight': '600',
           color: 'var(--text-primary)',
           flex: '1',
+          'line-height': '1.3',
         }}>
           {props.task.title}
         </h3>
@@ -82,14 +83,14 @@ const TaskCard: Component<TaskCardProps> = props => {
 
       {/* Description */}
       <p style={{
-        'font-size': '0.75rem',
+        'font-size': '0.7rem',
         color: 'var(--text-secondary)',
-        'margin-bottom': '0.75rem',
-        'line-height': '1.4',
+        'margin-bottom': '0.5rem',
+        'line-height': '1.3',
         'white-space': 'pre-wrap',
       }}>
-        {props.task.description.length > 100
-          ? props.task.description.substring(0, 100) + '...'
+        {props.task.description.length > 70
+          ? props.task.description.substring(0, 70) + '...'
           : props.task.description}
       </p>
 
@@ -123,10 +124,10 @@ const TaskCard: Component<TaskCardProps> = props => {
                 background: 'var(--accent-plan)',
                 color: 'var(--bg-primary)',
                 border: 'none',
-                padding: '0.25rem 0.75rem',
+                padding: '0.25rem 0.6rem',
                 'border-radius': '4px',
                 cursor: 'pointer',
-                'font-size': '0.75rem',
+                'font-size': '0.7rem',
                 'font-weight': '600',
                 transition: 'all 0.2s',
               }}
@@ -145,6 +146,7 @@ const TaskCard: Component<TaskCardProps> = props => {
         <div style={{
           'font-family': 'var(--font-mono)',
           color: 'var(--text-muted)',
+          'font-size': '0.7rem',
         }}>
           ${props.task.totalCost.toFixed(2)}
         </div>

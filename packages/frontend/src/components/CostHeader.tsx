@@ -18,7 +18,7 @@ const CostHeader: Component = () => {
     }}>
       <div>
         <h1 style={{
-          'font-size': '1.5rem',
+          'font-size': '1.25rem',
           'font-weight': '700',
           'margin-bottom': '0.25rem',
           background: 'linear-gradient(135deg, var(--accent-plan), var(--accent-build))',
@@ -28,7 +28,7 @@ const CostHeader: Component = () => {
           🤖 Agentic TaskBoard
         </h1>
         <p style={{
-          'font-size': '0.875rem',
+          'font-size': '0.75rem',
           color: 'var(--text-secondary)',
         }}>
           AI-powered SDLC orchestration with full observability
@@ -43,7 +43,7 @@ const CostHeader: Component = () => {
         {/* Total Cost */}
         <div style={{ 'text-align': 'right' }}>
           <div style={{
-            'font-size': '0.75rem',
+            'font-size': '0.65rem',
             color: 'var(--text-muted)',
             'text-transform': 'uppercase',
             'letter-spacing': '0.05em',
@@ -52,7 +52,7 @@ const CostHeader: Component = () => {
             Total Cost
           </div>
           <div style={{
-            'font-size': '1.5rem',
+            'font-size': '1.25rem',
             'font-weight': '700',
             'font-family': 'var(--font-mono)',
             color: 'var(--accent-build)',
@@ -64,8 +64,8 @@ const CostHeader: Component = () => {
         {/* Phase Breakdown */}
         <div style={{
           display: 'flex',
-          gap: '1rem',
-          'font-size': '0.75rem',
+          gap: '0.75rem',
+          'font-size': '0.7rem',
           'font-family': 'var(--font-mono)',
         }}>
           <div style={{ 'text-align': 'center' }}>

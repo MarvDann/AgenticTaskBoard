@@ -61,13 +61,13 @@ const CreateTaskModal: Component<CreateTaskModalProps> = props => {
         <div
           class="animate-fade-in"
           style={{
-            background: 'var(--bg-card)',
+            background: '#1a1f2e',
             border: '2px solid var(--accent-plan)',
             'border-radius': '12px',
             padding: '2rem',
             'max-width': '500px',
             width: '100%',
-            'box-shadow': '0 0 40px rgba(0, 212, 255, 0.3)',
+            'box-shadow': '0 0 40px rgba(0, 212, 255, 0.5)',
           }}
         >
           <h2 style={{

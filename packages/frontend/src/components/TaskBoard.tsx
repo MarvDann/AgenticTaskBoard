@@ -116,8 +116,8 @@ const TaskBoard: Component = () => {
       {/* Task Board Grid */}
       <div style={{
         display: 'grid',
-        'grid-template-columns': 'repeat(6, minmax(280px, 1fr))',
-        gap: '1rem',
+        'grid-template-columns': 'repeat(6, minmax(220px, 1fr))',
+        gap: '0.75rem',
         'margin-bottom': '2rem',
         'overflow-x': 'auto',
         'padding-bottom': '1rem',
