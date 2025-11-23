@@ -8,8 +8,10 @@ const App: Component = () => {
     <div
       class="container"
       style={{
-        'min-height': '100vh',
-        padding: '1rem',
+        height: '100vh',
+        display: 'flex',
+        'flex-direction': 'column',
+        overflow: 'hidden',
         background: 'var(--bg-primary)',
         'font-family': 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       }}

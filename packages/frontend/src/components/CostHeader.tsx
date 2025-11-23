@@ -8,13 +8,12 @@ const CostHeader: Component = () => {
   return (
     <header style={{
       background: 'var(--bg-secondary)',
-      'border-bottom': '3px solid var(--border-bright)',
-      padding: '1.25rem 1.5rem',
-      'margin-bottom': '1.5rem',
+      'border-bottom': '1px solid rgba(255, 255, 255, 0.1)',
+      padding: '0.875rem 1.5rem',
+      'margin-bottom': '0',
       display: 'flex',
       'justify-content': 'space-between',
       'align-items': 'center',
-      'box-shadow': '0 4px 6px rgba(0, 0, 0, 0.3)',
     }}>
       <div style={{ display: 'flex', 'align-items': 'center', gap: '2rem' }}>
         <h1 style={{

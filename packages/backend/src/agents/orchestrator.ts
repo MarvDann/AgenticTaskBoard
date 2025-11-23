@@ -47,36 +47,10 @@ export class Orchestrator {
           })
         }
 
-        // Create and execute agent for this phase
-        const result = await this.executePhase(task, phase, previousContext, accumulatedFiles)
+        console.log(`▶️  Starting phase: ${phase.toUpperCase()} (30 second simulation)`)
 
-        if (!result.success) {
-          console.error(`❌ Phase ${phase} failed: ${result.error}`)
-          store.updateTask(taskId, {
-            status: phase,
-            totalCost: task.totalCost + result.cost,
-            sessionCost: task.sessionCost + result.cost,
-          })
-          return
-        }
-
-        // Update context and files for next phase
-        previousContext = result.context
-        accumulatedFiles = [...accumulatedFiles, ...result.outputFiles]
-
-        // Update task cost
-        const costUpdatedTask = store.updateTask(taskId, {
-          totalCost: task.totalCost + result.cost,
-          sessionCost: task.sessionCost + result.cost,
-        })
-
-        if (costUpdatedTask) {
-          wsServer.broadcast({
-            type: 'cost:updated',
-            payload: { taskId, cost: result.cost, phase },
-            timestamp: new Date().toISOString(),
-          })
-        }
+        // Simulate phase execution with 30 second delay
+        await this.simulatePhase(task, phase, previousContext, accumulatedFiles)
 
         console.log(`✅ Phase ${phase} completed successfully`)
       } catch (error) {
@@ -96,6 +70,76 @@ export class Orchestrator {
     }
 
     console.log(`\n🎉 Task completed successfully: ${task.title}\n`)
+  }
+
+  private async simulatePhase(
+    task: Task,
+    phase: SDLCPhase,
+    previousContext: Record<string, unknown>,
+    files: string[]
+  ): Promise<void> {
+    // Create simulated workflow record
+    const workflow: Workflow = {
+      id: nanoid(),
+      taskId: task.id,
+      phase,
+      agentId: nanoid(),
+      agentType: phase === 'plan' ? 'planner' : phase === 'build' ? 'builder' : phase === 'review' ? 'reviewer' : 'tester',
+      status: 'running',
+      startTime: new Date().toISOString(),
+      cost: 0.12, // Simulated cost
+      logs: [],
+      context: previousContext,
+      outputFiles: [],
+    }
+
+    store.createWorkflow(workflow)
+
+    wsServer.broadcast({
+      type: 'workflow:started',
+      payload: workflow,
+      timestamp: new Date().toISOString(),
+    })
+
+    // Simulate 30 seconds of work
+    await new Promise(resolve => setTimeout(resolve, 30000))
+
+    // Update workflow as completed
+    const updatedWorkflow = store.updateWorkflow(workflow.id, {
+      status: 'completed',
+      endTime: new Date().toISOString(),
+      cost: 0.12,
+      logs: [{
+        id: nanoid(),
+        timestamp: new Date().toISOString(),
+        level: 'success' as const,
+        message: `Completed ${phase} phase simulation`,
+      }],
+      outputFiles: [],
+      context: { ...previousContext, [phase]: 'completed' },
+    })
+
+    if (updatedWorkflow) {
+      wsServer.broadcast({
+        type: 'workflow:completed',
+        payload: updatedWorkflow,
+        timestamp: new Date().toISOString(),
+      })
+    }
+
+    // Update task cost
+    const costUpdatedTask = store.updateTask(task.id, {
+      totalCost: task.totalCost + 0.12,
+      sessionCost: task.sessionCost + 0.12,
+    })
+
+    if (costUpdatedTask) {
+      wsServer.broadcast({
+        type: 'cost:updated',
+        payload: { taskId: task.id, cost: 0.12, phase },
+        timestamp: new Date().toISOString(),
+      })
+    }
   }
 
   private async executePhase(

@@ -59,8 +59,9 @@ const TaskBoard: Component = () => {
     <div style={{
       display: 'flex',
       'flex-direction': 'column',
-      height: 'calc(100vh - 120px)',
-      padding: '0 1.5rem',
+      flex: '1',
+      padding: '1rem 1.5rem',
+      overflow: 'hidden',
     }}>
       {/* Task Board Grid */}
       <div style={{
@@ -70,7 +71,6 @@ const TaskBoard: Component = () => {
         flex: '1',
         'overflow-x': 'auto',
         'overflow-y': 'hidden',
-        'padding-bottom': '1rem',
       }}>
         {phases.map(phase => (
           <SwimLane

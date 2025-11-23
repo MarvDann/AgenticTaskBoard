@@ -118,21 +118,6 @@ const SwimLane: Component<SwimLaneProps> = props => {
         <For each={props.tasks}>
           {task => <TaskCard task={task} />}
         </For>
-
-        {/* Empty State */}
-        {props.tasks.length === 0 && props.phase !== 'todo' && (
-          <div style={{
-            display: 'flex',
-            'align-items': 'center',
-            'justify-content': 'center',
-            'min-height': '200px',
-            color: 'var(--text-muted)',
-            'font-size': '0.875rem',
-            'text-align': 'center',
-          }}>
-            No tickets
-          </div>
-        )}
       </div>
     </div>
   )
