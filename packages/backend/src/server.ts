@@ -1,9 +1,9 @@
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
-import { taskRoutes } from './api/tasks'
-import { agentRoutes } from './api/agents'
-import { costRoutes } from './api/costs'
-import { wsServer } from './websocket/server'
+import { taskRoutes } from './api/tasks.js'
+import { agentRoutes } from './api/agents.js'
+import { costRoutes } from './api/costs.js'
+import { wsServer } from './websocket/server.js'
 
 const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3001
 const HOST = process.env.HOST || '0.0.0.0'

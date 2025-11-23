@@ -118,8 +118,10 @@ wsClient.subscribe(message => {
     break
 
   case 'task:updated':
+    const updatedTask = message.payload as Task
+    console.log(`📥 Received task:updated for ${updatedTask.id}, totalCost=${updatedTask.totalCost}`)
     setTasks(prev =>
-      prev.map(t => (t.id === (message.payload as Task).id ? (message.payload as Task) : t))
+      prev.map(t => (t.id === updatedTask.id ? updatedTask : t))
     )
     break
 

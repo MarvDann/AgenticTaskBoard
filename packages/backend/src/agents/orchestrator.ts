@@ -78,7 +78,7 @@ export class Orchestrator {
     previousContext: Record<string, unknown>,
     files: string[]
   ): Promise<void> {
-    // Create simulated workflow record
+    // Create simulated workflow record with initial cost of 0
     const workflow: Workflow = {
       id: nanoid(),
       taskId: task.id,
@@ -87,7 +87,7 @@ export class Orchestrator {
       agentType: phase === 'plan' ? 'planner' : phase === 'build' ? 'builder' : phase === 'review' ? 'reviewer' : 'tester',
       status: 'running',
       startTime: new Date().toISOString(),
-      cost: 0.12, // Simulated cost
+      cost: 0, // Will be updated after simulation
       logs: [],
       context: previousContext,
       outputFiles: [],
@@ -129,7 +129,12 @@ export class Orchestrator {
 
     // Update task cost (fetch current task to get latest cost values)
     const currentTask = store.getTask(task.id)
-    if (!currentTask) return
+    if (!currentTask) {
+      console.error(`❌ Could not fetch task ${task.id} for cost update`)
+      return
+    }
+
+    console.log(`💰 Updating cost for task ${task.id}: ${currentTask.totalCost} + 0.12 = ${currentTask.totalCost + 0.12}`)
 
     const costUpdatedTask = store.updateTask(task.id, {
       totalCost: currentTask.totalCost + 0.12,
@@ -137,6 +142,7 @@ export class Orchestrator {
     })
 
     if (costUpdatedTask) {
+      console.log(`✅ Task cost updated: ${costUpdatedTask.totalCost}`)
       // Broadcast cost update
       wsServer.broadcast({
         type: 'cost:updated',
@@ -149,6 +155,9 @@ export class Orchestrator {
         payload: costUpdatedTask,
         timestamp: new Date().toISOString(),
       })
+      console.log(`📡 Broadcasted task:updated with totalCost=${costUpdatedTask.totalCost}`)
+    } else {
+      console.error(`❌ Failed to update task ${task.id} cost`)
     }
   }
 
