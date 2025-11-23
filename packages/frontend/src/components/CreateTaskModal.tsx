@@ -70,7 +70,7 @@ const CreateTaskModal: Component<CreateTaskModalProps> = props => {
             background: '#1f2937',
             'border-radius': '12px',
             padding: '0',
-            'max-width': '600px',
+            'max-width': '700px',
             'max-height': '90vh',
             width: '100%',
             'box-shadow': '0 20px 25px -5px rgba(0, 0, 0, 0.5)',
@@ -149,6 +149,7 @@ const CreateTaskModal: Component<CreateTaskModalProps> = props => {
                     'font-size': '0.875rem',
                     'font-family': 'Inter, sans-serif',
                     transition: 'border-color 0.2s',
+                    'box-sizing': 'border-box',
                   }}
                   onFocus={e => {
                     e.currentTarget.style.borderColor = '#3b82f6'
@@ -185,6 +186,7 @@ const CreateTaskModal: Component<CreateTaskModalProps> = props => {
                     'font-family': 'Inter, sans-serif',
                     cursor: 'pointer',
                     transition: 'border-color 0.2s',
+                    'box-sizing': 'border-box',
                   }}
                   onFocus={e => {
                     e.currentTarget.style.borderColor = '#3b82f6'
@@ -227,6 +229,7 @@ const CreateTaskModal: Component<CreateTaskModalProps> = props => {
                       'font-size': '0.875rem',
                       'font-family': 'SF Mono, Consolas, monospace',
                       transition: 'border-color 0.2s',
+                      'box-sizing': 'border-box',
                     }}
                     onFocus={e => {
                       e.currentTarget.style.borderColor = '#3b82f6'
@@ -259,8 +262,9 @@ const CreateTaskModal: Component<CreateTaskModalProps> = props => {
                       'font-size': '0.875rem',
                       'font-family': 'Inter, sans-serif',
                       cursor: 'pointer',
-                      'min-width': '150px',
+                      width: '140px',
                       transition: 'border-color 0.2s',
+                      'box-sizing': 'border-box',
                     }}
                     onFocus={e => {
                       e.currentTarget.style.borderColor = '#3b82f6'
@@ -305,6 +309,7 @@ const CreateTaskModal: Component<CreateTaskModalProps> = props => {
                     resize: 'vertical',
                     'line-height': '1.5',
                     transition: 'border-color 0.2s',
+                    'box-sizing': 'border-box',
                   }}
                   onFocus={e => {
                     e.currentTarget.style.borderColor = '#3b82f6'
