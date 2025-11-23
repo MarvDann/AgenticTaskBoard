@@ -48,13 +48,17 @@
 }
 
 body {
-  font-family: var(--font-sans)
+  font-family: var(--font-sans) !important
   background: var(--bg-primary)
   color: var(--text-primary)
   line-height: 1.5
   font-size: 14px
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
+}
+
+* {
+  font-family: inherit
 }
 
 code, pre {

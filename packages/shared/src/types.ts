@@ -14,6 +14,8 @@ export interface Task {
   description: string
   status: SDLCPhase
   assignedAgent?: string
+  model?: string
+  codebasePath?: string
   createdAt: string
   updatedAt: string
   totalCost: number
@@ -114,6 +116,8 @@ export interface WSMessage<T = unknown> {
 export interface CreateTaskRequest {
   title: string
   description: string
+  model?: string
+  codebasePath?: string
 }
 
 export interface UpdateTaskRequest {
@@ -121,6 +125,8 @@ export interface UpdateTaskRequest {
   description?: string
   status?: SDLCPhase
   assignedAgent?: string
+  model?: string
+  codebasePath?: string
 }
 
 export interface AssignAgentRequest {

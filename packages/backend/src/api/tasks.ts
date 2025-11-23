@@ -30,8 +30,8 @@ export async function taskRoutes(fastify: FastifyInstance) {
   fastify.post<{ Body: CreateTaskRequest; Reply: CreateTaskResponse }>(
     '/tasks',
     async request => {
-      const { title, description } = request.body
-      const task = store.createTask(title, description)
+      const { title, description, model, codebasePath } = request.body
+      const task = store.createTask(title, description, model, codebasePath)
 
       // Broadcast task creation
       wsServer.broadcast({

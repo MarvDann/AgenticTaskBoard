@@ -7,12 +7,14 @@ class DataStore {
   private workflows: Map<string, Workflow> = new Map()
 
   // Task operations
-  createTask(title: string, description: string): Task {
+  createTask(title: string, description: string, model?: string, codebasePath?: string): Task {
     const task: Task = {
       id: nanoid(),
       title,
       description,
       status: 'todo',
+      model,
+      codebasePath,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       totalCost: 0,

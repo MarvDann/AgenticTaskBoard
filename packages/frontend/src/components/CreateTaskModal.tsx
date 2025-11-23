@@ -8,7 +8,9 @@ interface CreateTaskModalProps {
 
 const CreateTaskModal: Component<CreateTaskModalProps> = props => {
   const [title, setTitle] = createSignal('')
-  const [description, setDescription] = createSignal('')
+  const [model, setModel] = createSignal('sonnet')
+  const [codebasePath, setCodebasePath] = createSignal('.')
+  const [userRequestPrompt, setUserRequestPrompt] = createSignal('')
   const [submitting, setSubmitting] = createSignal(false)
 
   const handleSubmit = async (e: Event) => {
@@ -22,10 +24,14 @@ const CreateTaskModal: Component<CreateTaskModalProps> = props => {
     try {
       await createTask({
         title: title(),
-        description: description(),
+        description: userRequestPrompt(),
+        model: model(),
+        codebasePath: codebasePath(),
       })
       setTitle('')
-      setDescription('')
+      setUserRequestPrompt('')
+      setModel('sonnet')
+      setCodebasePath('.')
       props.onClose()
     } catch (error) {
       console.error('Error creating task:', error)
@@ -61,118 +67,282 @@ const CreateTaskModal: Component<CreateTaskModalProps> = props => {
         <div
           class="animate-fade-in"
           style={{
-            background: '#1a1f2e',
-            border: '2px solid var(--accent-plan)',
+            background: '#1f2937',
             'border-radius': '12px',
-            padding: '2rem',
-            'max-width': '500px',
+            padding: '0',
+            'max-width': '600px',
             width: '100%',
-            'box-shadow': '0 0 40px rgba(0, 212, 255, 0.5)',
+            'box-shadow': '0 20px 25px -5px rgba(0, 0, 0, 0.5)',
+            overflow: 'hidden',
           }}
         >
-          <h2 style={{
-            'font-size': '1.5rem',
-            'font-weight': '700',
-            'margin-bottom': '1.5rem',
-            color: 'var(--text-primary)',
+          {/* Header */}
+          <div style={{
+            display: 'flex',
+            'align-items': 'center',
+            'justify-content': 'space-between',
+            padding: '1.5rem',
+            'border-bottom': '1px solid rgba(255, 255, 255, 0.1)',
           }}>
-            Create New Task
-          </h2>
+            <h2 style={{
+              'font-size': '1.25rem',
+              'font-weight': '600',
+              color: '#f9fafb',
+              margin: '0',
+              'font-family': 'Inter, sans-serif',
+            }}>
+              Create New Ticket
+            </h2>
+            <button
+              onClick={props.onClose}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#9ca3af',
+                'font-size': '1.5rem',
+                cursor: 'pointer',
+                padding: '0',
+                'line-height': '1',
+                transition: 'color 0.2s',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.color = '#f9fafb'
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.color = '#9ca3af'
+              }}
+            >
+              ×
+            </button>
+          </div>
 
           <form onSubmit={handleSubmit}>
-            {/* Title Input */}
-            <div style={{ 'margin-bottom': '1rem' }}>
-              <label style={{
-                display: 'block',
-                'font-size': '0.875rem',
-                'font-weight': '600',
-                color: 'var(--text-secondary)',
-                'margin-bottom': '0.5rem',
-              }}>
-                Title *
-              </label>
-              <input
-                type="text"
-                value={title()}
-                onInput={e => setTitle(e.currentTarget.value)}
-                placeholder="Enter task title..."
-                required
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  background: 'var(--bg-tertiary)',
-                  border: '2px solid var(--border-subtle)',
-                  'border-radius': '6px',
-                  color: 'var(--text-primary)',
+            <div style={{ padding: '1.5rem', display: 'flex', 'flex-direction': 'column', gap: '1.25rem' }}>
+              {/* Title Input */}
+              <div>
+                <label style={{
+                  display: 'block',
                   'font-size': '0.875rem',
-                  transition: 'border-color 0.2s',
-                }}
-                onFocus={e => {
-                  e.currentTarget.style.borderColor = 'var(--accent-plan)'
-                }}
-                onBlur={e => {
-                  e.currentTarget.style.borderColor = 'var(--border-subtle)'
-                }}
-              />
+                  'font-weight': '500',
+                  color: '#d1d5db',
+                  'margin-bottom': '0.5rem',
+                  'font-family': 'Inter, sans-serif',
+                }}>
+                  Title
+                </label>
+                <input
+                  type="text"
+                  value={title()}
+                  onInput={e => setTitle(e.currentTarget.value)}
+                  placeholder="Brief description of the task"
+                  required
+                  style={{
+                    width: '100%',
+                    padding: '0.625rem 0.875rem',
+                    background: '#374151',
+                    border: '1px solid #4b5563',
+                    'border-radius': '6px',
+                    color: '#f9fafb',
+                    'font-size': '0.875rem',
+                    'font-family': 'Inter, sans-serif',
+                    transition: 'border-color 0.2s',
+                  }}
+                  onFocus={e => {
+                    e.currentTarget.style.borderColor = '#3b82f6'
+                  }}
+                  onBlur={e => {
+                    e.currentTarget.style.borderColor = '#4b5563'
+                  }}
+                />
+              </div>
+
+              {/* Model Dropdown */}
+              <div>
+                <label style={{
+                  display: 'block',
+                  'font-size': '0.875rem',
+                  'font-weight': '500',
+                  color: '#d1d5db',
+                  'margin-bottom': '0.5rem',
+                  'font-family': 'Inter, sans-serif',
+                }}>
+                  Model
+                </label>
+                <select
+                  value={model()}
+                  onChange={e => setModel(e.currentTarget.value)}
+                  style={{
+                    width: '100%',
+                    padding: '0.625rem 0.875rem',
+                    background: '#374151',
+                    border: '1px solid #4b5563',
+                    'border-radius': '6px',
+                    color: '#f9fafb',
+                    'font-size': '0.875rem',
+                    'font-family': 'Inter, sans-serif',
+                    cursor: 'pointer',
+                    transition: 'border-color 0.2s',
+                  }}
+                  onFocus={e => {
+                    e.currentTarget.style.borderColor = '#3b82f6'
+                  }}
+                  onBlur={e => {
+                    e.currentTarget.style.borderColor = '#4b5563'
+                  }}
+                >
+                  <option value="sonnet">Sonnet (Faster)</option>
+                  <option value="opus">Opus (Most Capable)</option>
+                  <option value="haiku">Haiku (Fastest)</option>
+                </select>
+              </div>
+
+              {/* Codebase Path */}
+              <div style={{ display: 'grid', 'grid-template-columns': '1fr auto', gap: '0.75rem' }}>
+                <div>
+                  <label style={{
+                    display: 'block',
+                    'font-size': '0.875rem',
+                    'font-weight': '500',
+                    color: '#d1d5db',
+                    'margin-bottom': '0.5rem',
+                    'font-family': 'Inter, sans-serif',
+                  }}>
+                    Codebase Path
+                  </label>
+                  <input
+                    type="text"
+                    value={codebasePath()}
+                    onInput={e => setCodebasePath(e.currentTarget.value)}
+                    placeholder="."
+                    style={{
+                      width: '100%',
+                      padding: '0.625rem 0.875rem',
+                      background: '#374151',
+                      border: '1px solid #4b5563',
+                      'border-radius': '6px',
+                      color: '#f9fafb',
+                      'font-size': '0.875rem',
+                      'font-family': 'SF Mono, Consolas, monospace',
+                      transition: 'border-color 0.2s',
+                    }}
+                    onFocus={e => {
+                      e.currentTarget.style.borderColor = '#3b82f6'
+                    }}
+                    onBlur={e => {
+                      e.currentTarget.style.borderColor = '#4b5563'
+                    }}
+                  />
+                </div>
+                <div>
+                  <label style={{
+                    display: 'block',
+                    'font-size': '0.875rem',
+                    'font-weight': '500',
+                    color: 'transparent',
+                    'margin-bottom': '0.5rem',
+                    'user-select': 'none',
+                  }}>
+                    _
+                  </label>
+                  <select
+                    value={codebasePath()}
+                    onChange={e => setCodebasePath(e.currentTarget.value)}
+                    style={{
+                      padding: '0.625rem 0.875rem',
+                      background: '#374151',
+                      border: '1px solid #4b5563',
+                      'border-radius': '6px',
+                      color: '#f9fafb',
+                      'font-size': '0.875rem',
+                      'font-family': 'Inter, sans-serif',
+                      cursor: 'pointer',
+                      'min-width': '150px',
+                      transition: 'border-color 0.2s',
+                    }}
+                    onFocus={e => {
+                      e.currentTarget.style.borderColor = '#3b82f6'
+                    }}
+                    onBlur={e => {
+                      e.currentTarget.style.borderColor = '#4b5563'
+                    }}
+                  >
+                    <option value=".">. (current)</option>
+                    <option value="./packages">./packages</option>
+                    <option value="./src">./src</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* User Request Prompt */}
+              <div>
+                <label style={{
+                  display: 'block',
+                  'font-size': '0.875rem',
+                  'font-weight': '500',
+                  color: '#d1d5db',
+                  'margin-bottom': '0.5rem',
+                  'font-family': 'Inter, sans-serif',
+                }}>
+                  User Request Prompt
+                </label>
+                <textarea
+                  value={userRequestPrompt()}
+                  onInput={e => setUserRequestPrompt(e.currentTarget.value)}
+                  placeholder="Describe what you want the agents to plan, build, and review..."
+                  rows={8}
+                  style={{
+                    width: '100%',
+                    padding: '0.625rem 0.875rem',
+                    background: '#374151',
+                    border: '1px solid #4b5563',
+                    'border-radius': '6px',
+                    color: '#f9fafb',
+                    'font-size': '0.875rem',
+                    'font-family': 'Inter, sans-serif',
+                    resize: 'vertical',
+                    'line-height': '1.5',
+                    transition: 'border-color 0.2s',
+                  }}
+                  onFocus={e => {
+                    e.currentTarget.style.borderColor = '#3b82f6'
+                  }}
+                  onBlur={e => {
+                    e.currentTarget.style.borderColor = '#4b5563'
+                  }}
+                />
+              </div>
             </div>
 
-            {/* Description Textarea */}
-            <div style={{ 'margin-bottom': '1.5rem' }}>
-              <label style={{
-                display: 'block',
-                'font-size': '0.875rem',
-                'font-weight': '600',
-                color: 'var(--text-secondary)',
-                'margin-bottom': '0.5rem',
-              }}>
-                Description
-              </label>
-              <textarea
-                value={description()}
-                onInput={e => setDescription(e.currentTarget.value)}
-                placeholder="Enter task description and requirements..."
-                rows={6}
-                style={{
-                  width: '100%',
-                  padding: '0.75rem',
-                  background: 'var(--bg-tertiary)',
-                  border: '2px solid var(--border-subtle)',
-                  'border-radius': '6px',
-                  color: 'var(--text-primary)',
-                  'font-size': '0.875rem',
-                  'font-family': 'var(--font-sans)',
-                  resize: 'vertical',
-                  transition: 'border-color 0.2s',
-                }}
-                onFocus={e => {
-                  e.currentTarget.style.borderColor = 'var(--accent-plan)'
-                }}
-                onBlur={e => {
-                  e.currentTarget.style.borderColor = 'var(--border-subtle)'
-                }}
-              />
-            </div>
-
-            {/* Buttons */}
+            {/* Footer Buttons */}
             <div style={{
               display: 'flex',
               gap: '0.75rem',
               'justify-content': 'flex-end',
+              padding: '1rem 1.5rem',
+              'border-top': '1px solid rgba(255, 255, 255, 0.1)',
+              background: '#1a1f2e',
             }}>
               <button
                 type="button"
                 onClick={props.onClose}
                 disabled={submitting()}
                 style={{
-                  padding: '0.75rem 1.5rem',
-                  background: 'var(--bg-tertiary)',
-                  border: '2px solid var(--border-subtle)',
+                  padding: '0.625rem 1.25rem',
+                  background: 'transparent',
+                  border: '1px solid #4b5563',
                   'border-radius': '6px',
-                  color: 'var(--text-secondary)',
+                  color: '#d1d5db',
                   'font-size': '0.875rem',
-                  'font-weight': '600',
+                  'font-weight': '500',
+                  'font-family': 'Inter, sans-serif',
                   cursor: 'pointer',
                   transition: 'all 0.2s',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = '#374151'
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = 'transparent'
                 }}
               >
                 Cancel
@@ -181,27 +351,29 @@ const CreateTaskModal: Component<CreateTaskModalProps> = props => {
                 type="submit"
                 disabled={submitting() || !title().trim()}
                 style={{
-                  padding: '0.75rem 1.5rem',
-                  background: 'var(--accent-plan)',
+                  padding: '0.625rem 1.25rem',
+                  background: submitting() || !title().trim() ? '#4b5563' : '#3b82f6',
                   border: 'none',
                   'border-radius': '6px',
-                  color: 'var(--bg-primary)',
+                  color: '#ffffff',
                   'font-size': '0.875rem',
-                  'font-weight': '600',
+                  'font-weight': '500',
+                  'font-family': 'Inter, sans-serif',
                   cursor: submitting() || !title().trim() ? 'not-allowed' : 'pointer',
-                  opacity: submitting() || !title().trim() ? '0.5' : '1',
                   transition: 'all 0.2s',
                 }}
                 onMouseEnter={e => {
                   if (!submitting() && title().trim()) {
-                    e.currentTarget.style.transform = 'scale(1.05)'
+                    e.currentTarget.style.background = '#2563eb'
                   }
                 }}
                 onMouseLeave={e => {
-                  e.currentTarget.style.transform = 'scale(1)'
+                  if (!submitting() && title().trim()) {
+                    e.currentTarget.style.background = '#3b82f6'
+                  }
                 }}
               >
-                {submitting() ? 'Creating...' : 'Create Task'}
+                {submitting() ? 'Creating...' : 'Create Ticket'}
               </button>
             </div>
           </form>
