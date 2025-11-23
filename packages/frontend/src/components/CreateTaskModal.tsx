@@ -71,9 +71,12 @@ const CreateTaskModal: Component<CreateTaskModalProps> = props => {
             'border-radius': '12px',
             padding: '0',
             'max-width': '600px',
+            'max-height': '90vh',
             width: '100%',
             'box-shadow': '0 20px 25px -5px rgba(0, 0, 0, 0.5)',
             overflow: 'hidden',
+            display: 'flex',
+            'flex-direction': 'column',
           }}
         >
           {/* Header */}
@@ -116,8 +119,8 @@ const CreateTaskModal: Component<CreateTaskModalProps> = props => {
             </button>
           </div>
 
-          <form onSubmit={handleSubmit}>
-            <div style={{ padding: '1.5rem', display: 'flex', 'flex-direction': 'column', gap: '1.25rem' }}>
+          <form onSubmit={handleSubmit} style={{ display: 'flex', 'flex-direction': 'column', flex: '1', 'overflow-y': 'auto' }}>
+            <div style={{ padding: '1.5rem', display: 'flex', 'flex-direction': 'column', gap: '1rem' }}>
               {/* Title Input */}
               <div>
                 <label style={{
@@ -289,7 +292,7 @@ const CreateTaskModal: Component<CreateTaskModalProps> = props => {
                   value={userRequestPrompt()}
                   onInput={e => setUserRequestPrompt(e.currentTarget.value)}
                   placeholder="Describe what you want the agents to plan, build, and review..."
-                  rows={8}
+                  rows={5}
                   style={{
                     width: '100%',
                     padding: '0.625rem 0.875rem',
@@ -321,6 +324,7 @@ const CreateTaskModal: Component<CreateTaskModalProps> = props => {
               padding: '1rem 1.5rem',
               'border-top': '1px solid rgba(255, 255, 255, 0.1)',
               background: '#1a1f2e',
+              'flex-shrink': '0',
             }}>
               <button
                 type="button"
