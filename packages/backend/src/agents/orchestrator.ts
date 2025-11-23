@@ -37,8 +37,12 @@ export class Orchestrator {
 
     for (const phase of phases) {
       try {
-        // Update task status
-        const updatedTask = store.updateTask(taskId, { status: phase })
+        // Update task status and reset cost for new phase (fresh context)
+        const updatedTask = store.updateTask(taskId, {
+          status: phase,
+          totalCost: 0, // Reset cost for new phase/agent with fresh context
+          sessionCost: 0,
+        })
         if (updatedTask) {
           wsServer.broadcast({
             type: 'task:updated',
@@ -127,17 +131,17 @@ export class Orchestrator {
       })
     }
 
-    // Update task cost (fetch current task to get latest cost values)
+    // Update task cost for current phase (each phase starts at $0 with fresh context)
     const currentTask = store.getTask(task.id)
     if (!currentTask) {
       console.error(`❌ Could not fetch task ${task.id} for cost update`)
       return
     }
 
-    console.log(`💰 Updating cost for task ${task.id}: ${currentTask.totalCost} + 0.12 = ${currentTask.totalCost + 0.12}`)
+    console.log(`💰 Updating cost for task ${task.id} in ${phase} phase: ${currentTask.totalCost} + 0.12 = ${currentTask.totalCost + 0.12}`)
 
     const costUpdatedTask = store.updateTask(task.id, {
-      totalCost: currentTask.totalCost + 0.12,
+      totalCost: currentTask.totalCost + 0.12, // Accumulate cost within current phase
       sessionCost: currentTask.sessionCost + 0.12,
     })
 
