@@ -41,17 +41,17 @@ const TaskBoard: Component = () => {
   })
 
   const tasksByPhase = createMemo(() => {
-    const byPhase: Record<SDLCPhase, typeof tasks> = {
-      todo: () => [],
-      plan: () => [],
-      build: () => [],
-      review: () => [],
-      test: () => [],
-      done: () => [],
+    const byPhase: Record<SDLCPhase, Task[]> = {
+      todo: [],
+      plan: [],
+      build: [],
+      review: [],
+      test: [],
+      done: [],
     }
 
     tasks().forEach(task => {
-      byPhase[task.status] = () => [...byPhase[task.status](), task]
+      byPhase[task.status].push(task)
     })
 
     return byPhase
@@ -101,7 +101,7 @@ const TaskBoard: Component = () => {
           <SwimLane
             phase={phase.id}
             title={phase.title}
-            tasks={tasksByPhase()[phase.id]()}
+            tasks={tasksByPhase()[phase.id]}
             color={phaseColors[phase.id]}
             onCreateTask={phase.id === 'todo' ? () => setIsCreateModalOpen(true) : undefined}
           />

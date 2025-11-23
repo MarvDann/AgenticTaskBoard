@@ -11,6 +11,7 @@ const App: Component = () => {
         'min-height': '100vh',
         padding: '1rem',
         background: 'var(--bg-primary)',
+        'font-family': 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       }}
     >
       <CostHeader />
