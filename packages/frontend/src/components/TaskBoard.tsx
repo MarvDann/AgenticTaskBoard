@@ -116,9 +116,11 @@ const TaskBoard: Component = () => {
       {/* Task Board Grid */}
       <div style={{
         display: 'grid',
-        'grid-template-columns': 'repeat(auto-fit, minmax(300px, 1fr))',
+        'grid-template-columns': 'repeat(6, minmax(280px, 1fr))',
         gap: '1rem',
         'margin-bottom': '2rem',
+        'overflow-x': 'auto',
+        'padding-bottom': '1rem',
       }}>
         {phases.map(phase => (
           <SwimLane

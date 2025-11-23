@@ -57,7 +57,7 @@ const CostHeader: Component = () => {
             'font-family': 'var(--font-mono)',
             color: 'var(--accent-build)',
           }}>
-            ${costs().total.toFixed(4)}
+            ${costs().total.toFixed(2)}
           </div>
         </div>
 
@@ -71,25 +71,25 @@ const CostHeader: Component = () => {
           <div style={{ 'text-align': 'center' }}>
             <div style={{ color: 'var(--text-muted)' }}>Plan</div>
             <div style={{ color: 'var(--accent-plan)', 'font-weight': '600' }}>
-              ${costs().byPhase.plan.toFixed(3)}
+              ${costs().byPhase.plan.toFixed(2)}
             </div>
           </div>
           <div style={{ 'text-align': 'center' }}>
             <div style={{ color: 'var(--text-muted)' }}>Build</div>
             <div style={{ color: 'var(--accent-build)', 'font-weight': '600' }}>
-              ${costs().byPhase.build.toFixed(3)}
+              ${costs().byPhase.build.toFixed(2)}
             </div>
           </div>
           <div style={{ 'text-align': 'center' }}>
             <div style={{ color: 'var(--text-muted)' }}>Review</div>
             <div style={{ color: 'var(--accent-review)', 'font-weight': '600' }}>
-              ${costs().byPhase.review.toFixed(3)}
+              ${costs().byPhase.review.toFixed(2)}
             </div>
           </div>
           <div style={{ 'text-align': 'center' }}>
             <div style={{ color: 'var(--text-muted)' }}>Test</div>
             <div style={{ color: 'var(--accent-test)', 'font-weight': '600' }}>
-              ${costs().byPhase.test.toFixed(3)}
+              ${costs().byPhase.test.toFixed(2)}
             </div>
           </div>
         </div>

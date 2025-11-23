@@ -5,7 +5,14 @@ import './styles/theme.css'
 
 const App: Component = () => {
   return (
-    <div class="container" style={{ 'min-height': '100vh', padding: '1rem' }}>
+    <div
+      class="container"
+      style={{
+        'min-height': '100vh',
+        padding: '1rem',
+        background: 'var(--bg-primary)',
+      }}
+    >
       <CostHeader />
       <TaskBoard />
     </div>

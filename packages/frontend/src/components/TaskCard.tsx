@@ -146,7 +146,7 @@ const TaskCard: Component<TaskCardProps> = props => {
           'font-family': 'var(--font-mono)',
           color: 'var(--text-muted)',
         }}>
-          ${props.task.totalCost.toFixed(4)}
+          ${props.task.totalCost.toFixed(2)}
         </div>
       </div>
     </div>
