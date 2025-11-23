@@ -127,16 +127,26 @@ export class Orchestrator {
       })
     }
 
-    // Update task cost
+    // Update task cost (fetch current task to get latest cost values)
+    const currentTask = store.getTask(task.id)
+    if (!currentTask) return
+
     const costUpdatedTask = store.updateTask(task.id, {
-      totalCost: task.totalCost + 0.12,
-      sessionCost: task.sessionCost + 0.12,
+      totalCost: currentTask.totalCost + 0.12,
+      sessionCost: currentTask.sessionCost + 0.12,
     })
 
     if (costUpdatedTask) {
+      // Broadcast cost update
       wsServer.broadcast({
         type: 'cost:updated',
         payload: { taskId: task.id, cost: 0.12, phase },
+        timestamp: new Date().toISOString(),
+      })
+      // Broadcast task update so frontend shows updated cost
+      wsServer.broadcast({
+        type: 'task:updated',
+        payload: costUpdatedTask,
         timestamp: new Date().toISOString(),
       })
     }
