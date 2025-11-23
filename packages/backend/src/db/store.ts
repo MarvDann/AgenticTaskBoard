@@ -107,9 +107,6 @@ class DataStore {
 
   // Cost operations
   getCostBreakdown(): CostBreakdown {
-    const tasks = this.getAllTasks()
-    const total = tasks.reduce((sum, task) => sum + task.totalCost, 0)
-
     const byPhase: Record<SDLCPhase, number> = {
       todo: 0,
       plan: 0,
@@ -136,6 +133,9 @@ class DataStore {
       }
       byTask[workflow.taskId] += workflow.cost
     })
+
+    // Calculate total by summing all phase costs
+    const total = Object.values(byPhase).reduce((sum, cost) => sum + cost, 0)
 
     return { total, byPhase, byAgent, byTask }
   }
