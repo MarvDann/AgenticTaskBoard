@@ -7,12 +7,12 @@ interface TaskCardProps {
 }
 
 const phaseColors: Record<Task['status'], string> = {
-  todo: 'var(--text-muted)',
-  plan: 'var(--accent-plan)',
-  build: 'var(--accent-build)',
-  review: 'var(--accent-review)',
-  test: 'var(--accent-test)',
-  done: 'var(--accent-done)',
+  todo: '#6B7280',
+  plan: '#3B82F6',
+  build: '#10B981',
+  review: '#F59E0B',
+  test: '#EC4899',
+  done: '#8B5CF6',
 }
 
 const TaskCard: Component<TaskCardProps> = props => {
@@ -121,8 +121,8 @@ const TaskCard: Component<TaskCardProps> = props => {
             <button
               onClick={handleAssignAgent}
               style={{
-                background: 'var(--accent-plan)',
-                color: 'var(--bg-primary)',
+                background: '#3B82F6',
+                color: '#fff',
                 border: 'none',
                 padding: '0.25rem 0.6rem',
                 'border-radius': '4px',
@@ -133,9 +133,11 @@ const TaskCard: Component<TaskCardProps> = props => {
               }}
               onMouseEnter={e => {
                 e.currentTarget.style.transform = 'scale(1.05)'
+                e.currentTarget.style.background = '#2563EB'
               }}
               onMouseLeave={e => {
                 e.currentTarget.style.transform = 'scale(1)'
+                e.currentTarget.style.background = '#3B82F6'
               }}
             >
               Assign Agent

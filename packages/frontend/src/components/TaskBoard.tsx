@@ -6,21 +6,21 @@ import SwimLane from './SwimLane'
 import CreateTaskModal from './CreateTaskModal'
 
 const phaseColors: Record<SDLCPhase, string> = {
-  todo: 'var(--text-muted)',
-  plan: 'var(--accent-plan)',
-  build: 'var(--accent-build)',
-  review: 'var(--accent-review)',
-  test: 'var(--accent-test)',
-  done: 'var(--accent-done)',
+  todo: '#6B7280',
+  plan: '#3B82F6',
+  build: '#10B981',
+  review: '#F59E0B',
+  test: '#EC4899',
+  done: '#8B5CF6',
 }
 
 const phases: Array<{ id: SDLCPhase; title: string }> = [
-  { id: 'todo', title: 'To Do' },
-  { id: 'plan', title: 'Plan' },
-  { id: 'build', title: 'Build' },
-  { id: 'review', title: 'Review' },
-  { id: 'test', title: 'Test' },
-  { id: 'done', title: 'Done' },
+  { id: 'todo', title: 'IDLE' },
+  { id: 'plan', title: 'PLAN' },
+  { id: 'build', title: 'BUILD' },
+  { id: 'review', title: 'REVIEW' },
+  { id: 'test', title: 'TEST' },
+  { id: 'done', title: 'SHIPPED' },
 ]
 
 const TaskBoard: Component = () => {
@@ -90,10 +90,10 @@ const TaskBoard: Component = () => {
           onClick={() => setIsCreateModalOpen(true)}
           style={{
             padding: '0.75rem 1.5rem',
-            background: 'linear-gradient(135deg, var(--accent-plan), var(--accent-build))',
+            background: '#3B82F6',
             border: 'none',
-            'border-radius': '8px',
-            color: 'var(--bg-primary)',
+            'border-radius': '6px',
+            color: '#fff',
             'font-size': '0.875rem',
             'font-weight': '600',
             cursor: 'pointer',
@@ -101,15 +101,17 @@ const TaskBoard: Component = () => {
             transition: 'all 0.2s',
           }}
           onMouseEnter={e => {
+            e.currentTarget.style.background = '#2563EB'
             e.currentTarget.style.transform = 'translateY(-2px)'
             e.currentTarget.style.boxShadow = 'var(--shadow-lg)'
           }}
           onMouseLeave={e => {
+            e.currentTarget.style.background = '#3B82F6'
             e.currentTarget.style.transform = 'translateY(0)'
             e.currentTarget.style.boxShadow = 'var(--shadow-md)'
           }}
         >
-          + Create Task
+          + New Ticket
         </button>
       </div>
 

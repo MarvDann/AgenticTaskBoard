@@ -19,16 +19,21 @@ const phaseIcons: Record<SDLCPhase, string> = {
 }
 
 const SwimLane: Component<SwimLaneProps> = props => {
+  // Determine if we should use dark or light text based on the color
+  const getTextColor = () => {
+    if (props.phase === 'todo') return '#000'
+    return '#fff'
+  }
+
   return (
     <div
       style={{
         background: 'var(--bg-secondary)',
-        border: `1px solid ${props.color}44`,
-        'border-radius': '10px',
-        padding: '0.75rem',
+        'border-radius': '8px',
         'min-height': '500px',
         display: 'flex',
         'flex-direction': 'column',
+        overflow: 'hidden',
         'box-shadow': 'var(--shadow-md)',
       }}
     >
@@ -37,36 +42,33 @@ const SwimLane: Component<SwimLaneProps> = props => {
         display: 'flex',
         'align-items': 'center',
         'justify-content': 'space-between',
-        'margin-bottom': '1rem',
-        padding: '0.75rem',
-        background: `linear-gradient(135deg, ${props.color}22, ${props.color}11)`,
-        'border-radius': '8px',
-        border: `1px solid ${props.color}`,
+        padding: '0.875rem 1rem',
+        background: props.color,
       }}>
         <div style={{
           display: 'flex',
           'align-items': 'center',
           gap: '0.5rem',
         }}>
-          <span style={{ 'font-size': '1.25rem' }}>{phaseIcons[props.phase]}</span>
           <h2 style={{
             'font-size': '0.875rem',
             'font-weight': '700',
-            color: props.color,
+            color: getTextColor(),
             'text-transform': 'uppercase',
             'letter-spacing': '0.05em',
+            margin: '0',
           }}>
             {props.title}
           </h2>
         </div>
         <div style={{
-          background: props.color,
-          color: 'var(--bg-primary)',
+          background: 'rgba(0, 0, 0, 0.2)',
+          color: getTextColor(),
           'font-weight': '700',
           'font-size': '0.75rem',
-          padding: '0.25rem 0.5rem',
+          padding: '0.25rem 0.625rem',
           'border-radius': '12px',
-          'min-width': '1.5rem',
+          'min-width': '1.75rem',
           'text-align': 'center',
         }}>
           {props.tasks.length}
@@ -77,7 +79,7 @@ const SwimLane: Component<SwimLaneProps> = props => {
       <div style={{
         flex: '1',
         'overflow-y': 'auto',
-        'padding-right': '0.25rem',
+        padding: '0.75rem',
       }}>
         <For each={props.tasks}>
           {task => <TaskCard task={task} />}
@@ -94,7 +96,7 @@ const SwimLane: Component<SwimLaneProps> = props => {
             'font-size': '0.875rem',
             'text-align': 'center',
           }}>
-            No tasks in {props.title.toLowerCase()}
+            No tickets
           </div>
         )}
       </div>
