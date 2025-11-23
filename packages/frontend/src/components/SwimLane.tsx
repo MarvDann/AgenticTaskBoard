@@ -86,7 +86,7 @@ const SwimLane: Component<SwimLaneProps> = props => {
         'flex-direction': 'column',
         gap: '0.75rem',
       }}>
-        {/* Create Task Button (IDLE column only) */}
+        {/* Create Task Button (TODO column only) */}
         <Show when={props.phase === 'todo' && props.onCreateTask}>
           <button
             onClick={props.onCreateTask}

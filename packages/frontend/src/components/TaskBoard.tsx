@@ -14,12 +14,12 @@ const phaseColors: Record<SDLCPhase, string> = {
 }
 
 const phases: Array<{ id: SDLCPhase; title: string }> = [
-  { id: 'todo', title: 'IDLE' },
+  { id: 'todo', title: 'TODO' },
   { id: 'plan', title: 'PLAN' },
   { id: 'build', title: 'BUILD' },
   { id: 'review', title: 'REVIEW' },
   { id: 'test', title: 'TEST' },
-  { id: 'done', title: 'SHIPPED' },
+  { id: 'done', title: 'DONE' },
 ]
 
 const TaskBoard: Component = () => {
