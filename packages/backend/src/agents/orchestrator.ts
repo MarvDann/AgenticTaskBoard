@@ -91,7 +91,7 @@ export class Orchestrator {
       agentType: phase === 'plan' ? 'planner' : phase === 'build' ? 'builder' : phase === 'review' ? 'reviewer' : 'tester',
       status: 'running',
       startTime: new Date().toISOString(),
-      cost: 0, // Will be updated after simulation
+      cost: 0, // Will be updated incrementally
       logs: [],
       context: previousContext,
       outputFiles: [],
@@ -105,14 +105,53 @@ export class Orchestrator {
       timestamp: new Date().toISOString(),
     })
 
-    // Simulate 30 seconds of work
-    await new Promise(resolve => setTimeout(resolve, 30000))
+    // Simulate inference with cost updates at 10s, 20s, and 30s
+    const costIncrement = 0.04 // $0.04 per 10 seconds = $0.12 total
+    const intervals = [10000, 10000, 10000] // 10s, 10s, 10s = 30s total
+
+    for (let i = 0; i < intervals.length; i++) {
+      await new Promise(resolve => setTimeout(resolve, intervals[i]))
+
+      // Update workflow cost
+      const currentWorkflowCost = (i + 1) * costIncrement
+      store.updateWorkflow(workflow.id, {
+        cost: currentWorkflowCost,
+      })
+
+      // Update task cost
+      const currentTask = store.getTask(task.id)
+      if (currentTask) {
+        const updatedTaskCost = currentTask.totalCost + costIncrement
+        console.log(`💰 [${i + 1}0s] Updating cost for task ${task.id} in ${phase} phase: ${currentTask.totalCost.toFixed(2)} + ${costIncrement} = ${updatedTaskCost.toFixed(2)}`)
+
+        const costUpdatedTask = store.updateTask(task.id, {
+          totalCost: updatedTaskCost,
+          sessionCost: currentTask.sessionCost + costIncrement,
+        })
+
+        if (costUpdatedTask) {
+          // Broadcast task update so frontend shows updated cost in real-time
+          wsServer.broadcast({
+            type: 'task:updated',
+            payload: costUpdatedTask,
+            timestamp: new Date().toISOString(),
+          })
+
+          // Broadcast cost update for header
+          wsServer.broadcast({
+            type: 'cost:updated',
+            payload: { taskId: task.id, cost: costIncrement, phase },
+            timestamp: new Date().toISOString(),
+          })
+        }
+      }
+    }
 
     // Update workflow as completed
     const updatedWorkflow = store.updateWorkflow(workflow.id, {
       status: 'completed',
       endTime: new Date().toISOString(),
-      cost: 0.12,
+      cost: 0.12, // Final cost
       logs: [{
         id: nanoid(),
         timestamp: new Date().toISOString(),
@@ -129,39 +168,6 @@ export class Orchestrator {
         payload: updatedWorkflow,
         timestamp: new Date().toISOString(),
       })
-    }
-
-    // Update task cost for current phase (each phase starts at $0 with fresh context)
-    const currentTask = store.getTask(task.id)
-    if (!currentTask) {
-      console.error(`❌ Could not fetch task ${task.id} for cost update`)
-      return
-    }
-
-    console.log(`💰 Updating cost for task ${task.id} in ${phase} phase: ${currentTask.totalCost} + 0.12 = ${currentTask.totalCost + 0.12}`)
-
-    const costUpdatedTask = store.updateTask(task.id, {
-      totalCost: currentTask.totalCost + 0.12, // Accumulate cost within current phase
-      sessionCost: currentTask.sessionCost + 0.12,
-    })
-
-    if (costUpdatedTask) {
-      console.log(`✅ Task cost updated: ${costUpdatedTask.totalCost}`)
-      // Broadcast cost update
-      wsServer.broadcast({
-        type: 'cost:updated',
-        payload: { taskId: task.id, cost: 0.12, phase },
-        timestamp: new Date().toISOString(),
-      })
-      // Broadcast task update so frontend shows updated cost
-      wsServer.broadcast({
-        type: 'task:updated',
-        payload: costUpdatedTask,
-        timestamp: new Date().toISOString(),
-      })
-      console.log(`📡 Broadcasted task:updated with totalCost=${costUpdatedTask.totalCost}`)
-    } else {
-      console.error(`❌ Failed to update task ${task.id} cost`)
     }
   }
 
