@@ -37,6 +37,10 @@ export async function createTask(request: CreateTaskRequest): Promise<Task | nul
       body: JSON.stringify(request),
     })
     const data = await response.json()
+    // Immediately update local state
+    if (data.task) {
+      setTasks(prev => [data.task, ...prev])
+    }
     return data.task
   } catch (error) {
     console.error('Error creating task:', error)

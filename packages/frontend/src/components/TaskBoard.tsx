@@ -58,61 +58,33 @@ const TaskBoard: Component = () => {
   })
 
   return (
-    <div style={{ padding: '1.5rem 0' }}>
-      {/* Connection Status & Create Button */}
+    <div style={{
+      display: 'flex',
+      'flex-direction': 'column',
+      height: 'calc(100vh - 120px)',
+      padding: '0 1.5rem',
+    }}>
+      {/* Connection Status */}
       <div style={{
         display: 'flex',
-        'justify-content': 'space-between',
         'align-items': 'center',
-        'margin-bottom': '1.5rem',
+        gap: '0.5rem',
+        'font-size': '0.875rem',
+        'margin-bottom': '1rem',
+        padding: '0.5rem 0',
       }}>
         <div style={{
-          display: 'flex',
-          'align-items': 'center',
-          gap: '0.5rem',
-          'font-size': '0.875rem',
-        }}>
-          <div style={{
-            width: '8px',
-            height: '8px',
-            'border-radius': '50%',
-            background: connected() ? 'var(--accent-build)' : 'var(--status-error)',
-            'box-shadow': connected()
-              ? '0 0 10px var(--accent-build)'
-              : '0 0 10px var(--status-error)',
-          }} />
-          <span style={{ color: 'var(--text-secondary)' }}>
-            {connected() ? 'Connected' : 'Disconnected'}
-          </span>
-        </div>
-
-        <button
-          onClick={() => setIsCreateModalOpen(true)}
-          style={{
-            padding: '0.75rem 1.5rem',
-            background: '#3B82F6',
-            border: 'none',
-            'border-radius': '6px',
-            color: '#fff',
-            'font-size': '0.875rem',
-            'font-weight': '600',
-            cursor: 'pointer',
-            'box-shadow': 'var(--shadow-md)',
-            transition: 'all 0.2s',
-          }}
-          onMouseEnter={e => {
-            e.currentTarget.style.background = '#2563EB'
-            e.currentTarget.style.transform = 'translateY(-2px)'
-            e.currentTarget.style.boxShadow = 'var(--shadow-lg)'
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.background = '#3B82F6'
-            e.currentTarget.style.transform = 'translateY(0)'
-            e.currentTarget.style.boxShadow = 'var(--shadow-md)'
-          }}
-        >
-          + New Ticket
-        </button>
+          width: '8px',
+          height: '8px',
+          'border-radius': '50%',
+          background: connected() ? 'var(--accent-build)' : 'var(--status-error)',
+          'box-shadow': connected()
+            ? '0 0 10px var(--accent-build)'
+            : '0 0 10px var(--status-error)',
+        }} />
+        <span style={{ color: 'var(--text-secondary)' }}>
+          {connected() ? 'Connected' : 'Disconnected'}
+        </span>
       </div>
 
       {/* Task Board Grid */}
@@ -120,8 +92,9 @@ const TaskBoard: Component = () => {
         display: 'grid',
         'grid-template-columns': 'repeat(6, minmax(220px, 1fr))',
         gap: '0.75rem',
-        'margin-bottom': '2rem',
+        flex: '1',
         'overflow-x': 'auto',
+        'overflow-y': 'hidden',
         'padding-bottom': '1rem',
       }}>
         {phases.map(phase => (
@@ -130,6 +103,7 @@ const TaskBoard: Component = () => {
             title={phase.title}
             tasks={tasksByPhase()[phase.id]()}
             color={phaseColors[phase.id]}
+            onCreateTask={phase.id === 'todo' ? () => setIsCreateModalOpen(true) : undefined}
           />
         ))}
       </div>

@@ -1,4 +1,4 @@
-import { Component, For } from 'solid-js'
+import { Component, For, Show } from 'solid-js'
 import { Task, SDLCPhase } from '@agentic-taskboard/shared'
 import TaskCard from './TaskCard'
 
@@ -7,6 +7,7 @@ interface SwimLaneProps {
   title: string
   tasks: Task[]
   color: string
+  onCreateTask?: () => void
 }
 
 const phaseIcons: Record<SDLCPhase, string> = {
@@ -28,13 +29,14 @@ const SwimLane: Component<SwimLaneProps> = props => {
   return (
     <div
       style={{
-        background: 'var(--bg-secondary)',
+        background: '#1a1f2e',
         'border-radius': '8px',
-        'min-height': '500px',
+        height: '100%',
         display: 'flex',
         'flex-direction': 'column',
         overflow: 'hidden',
-        'box-shadow': 'var(--shadow-md)',
+        'box-shadow': '0 4px 6px rgba(0, 0, 0, 0.4)',
+        border: '1px solid rgba(255, 255, 255, 0.05)',
       }}
     >
       {/* Header */}
@@ -80,18 +82,50 @@ const SwimLane: Component<SwimLaneProps> = props => {
         flex: '1',
         'overflow-y': 'auto',
         padding: '0.75rem',
+        display: 'flex',
+        'flex-direction': 'column',
+        gap: '0.75rem',
       }}>
+        {/* Create Task Button (IDLE column only) */}
+        <Show when={props.phase === 'todo' && props.onCreateTask}>
+          <button
+            onClick={props.onCreateTask}
+            style={{
+              padding: '0.75rem',
+              background: 'rgba(59, 130, 246, 0.1)',
+              border: '2px dashed #3B82F6',
+              'border-radius': '6px',
+              color: '#3B82F6',
+              'font-size': '0.875rem',
+              'font-weight': '600',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              'text-align': 'center',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'rgba(59, 130, 246, 0.2)'
+              e.currentTarget.style.borderStyle = 'solid'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'rgba(59, 130, 246, 0.1)'
+              e.currentTarget.style.borderStyle = 'dashed'
+            }}
+          >
+            + New Ticket
+          </button>
+        </Show>
+
         <For each={props.tasks}>
           {task => <TaskCard task={task} />}
         </For>
 
         {/* Empty State */}
-        {props.tasks.length === 0 && (
+        {props.tasks.length === 0 && props.phase !== 'todo' && (
           <div style={{
             display: 'flex',
             'align-items': 'center',
             'justify-content': 'center',
-            height: '200px',
+            'min-height': '200px',
             color: 'var(--text-muted)',
             'font-size': '0.875rem',
             'text-align': 'center',
