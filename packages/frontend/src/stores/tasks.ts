@@ -110,7 +110,14 @@ export async function fetchCosts() {
 wsClient.subscribe(message => {
   switch (message.type) {
   case 'task:created':
-    setTasks(prev => [message.payload as Task, ...prev])
+    setTasks(prev => {
+      const newTask = message.payload as Task
+      // Check if task already exists to prevent duplicates
+      if (prev.some(t => t.id === newTask.id)) {
+        return prev
+      }
+      return [newTask, ...prev]
+    })
     break
 
   case 'task:updated':

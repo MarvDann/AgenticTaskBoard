@@ -1,7 +1,10 @@
 import { Component } from 'solid-js'
 import { costs } from '../stores/tasks'
+import { useWebSocket } from '../stores/websocket'
 
 const CostHeader: Component = () => {
+  const { connected } = useWebSocket()
+
   return (
     <header style={{
       background: 'var(--bg-secondary)',
@@ -30,6 +33,28 @@ const CostHeader: Component = () => {
         }}>
           Plan → Build → Review → Ship
         </div>
+      </div>
+
+      {/* Connection Indicator */}
+      <div style={{
+        display: 'flex',
+        'align-items': 'center',
+        gap: '0.5rem',
+        'font-size': '0.75rem',
+        color: 'var(--text-secondary)',
+      }}>
+        <div style={{
+          width: '8px',
+          height: '8px',
+          'border-radius': '50%',
+          background: connected() ? '#10b981' : '#ef4444',
+          'box-shadow': connected()
+            ? '0 0 8px rgba(16, 185, 129, 0.6)'
+            : '0 0 8px rgba(239, 68, 68, 0.6)',
+        }} />
+        <span style={{ 'text-transform': 'uppercase', 'letter-spacing': '0.05em' }}>
+          {connected() ? 'Connected' : 'Disconnected'}
+        </span>
       </div>
 
       <div style={{

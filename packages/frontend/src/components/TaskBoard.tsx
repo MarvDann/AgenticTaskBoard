@@ -1,7 +1,6 @@
 import { Component, createMemo, onMount, createSignal } from 'solid-js'
 import { SDLCPhase } from '@agentic-taskboard/shared'
 import { tasks, fetchTasks, fetchAgents, fetchCosts } from '../stores/tasks'
-import { useWebSocket } from '../stores/websocket'
 import SwimLane from './SwimLane'
 import CreateTaskModal from './CreateTaskModal'
 
@@ -24,7 +23,6 @@ const phases: Array<{ id: SDLCPhase; title: string }> = [
 ]
 
 const TaskBoard: Component = () => {
-  const { connected } = useWebSocket()
   const [isCreateModalOpen, setIsCreateModalOpen] = createSignal(false)
 
   onMount(() => {
@@ -64,29 +62,6 @@ const TaskBoard: Component = () => {
       height: 'calc(100vh - 120px)',
       padding: '0 1.5rem',
     }}>
-      {/* Connection Status */}
-      <div style={{
-        display: 'flex',
-        'align-items': 'center',
-        gap: '0.5rem',
-        'font-size': '0.875rem',
-        'margin-bottom': '1rem',
-        padding: '0.5rem 0',
-      }}>
-        <div style={{
-          width: '8px',
-          height: '8px',
-          'border-radius': '50%',
-          background: connected() ? 'var(--accent-build)' : 'var(--status-error)',
-          'box-shadow': connected()
-            ? '0 0 10px var(--accent-build)'
-            : '0 0 10px var(--status-error)',
-        }} />
-        <span style={{ color: 'var(--text-secondary)' }}>
-          {connected() ? 'Connected' : 'Disconnected'}
-        </span>
-      </div>
-
       {/* Task Board Grid */}
       <div style={{
         display: 'grid',
